@@ -1,0 +1,11 @@
+var userConfig = {
+
+    //自动进入空闲状态前等待的时间，毫秒。0 表示永不自动进入空闲状态
+    timeBeforeGoFree: 30*1000, 
+    
+    //动作状态下切牌的时间间隔，毫秒
+    busySpeed: 30, 
+    
+    //空闲状态下“把所有牌展成扇形”所占比例，范围 [0, 1]
+    proportionOfFanWhenFree: 0.3,
+};
