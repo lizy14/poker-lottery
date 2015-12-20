@@ -1,6 +1,6 @@
 # poker-lottery
 
-2015生院学生节抽奖程序。[demo](http://static.200404.xyz/poker-lottery)
+2015生院学生节抽奖程序。[demo](http://static.nullspace.cn/poker-lottery)
 
 ## 操作方法
 
@@ -52,4 +52,3 @@ Authored by Zhaoyang Li, SSAST, 2015.11.
 lizy14@mails.tsinghua.edu.cn
 
 Last Modified: 2015-11-27 23:50
-
