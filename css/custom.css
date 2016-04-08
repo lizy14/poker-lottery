@@ -2,10 +2,23 @@ body{
     overflow: hidden;
 }
 
+@font-face { font-family: u2c00; src: url(u2c00.woff); }
+@font-face { font-family: u2000; src: url(u2000.woff); }
+@font-face { font-family: u2800; src: url(u2000.woff); }
+@font-face { font-family: u1800; src: url(u1800.woff); }
+@font-face { font-family: u2c00; src: url(u13000.woff); }
+@font-face { font-family: u2000; src: url(u1d000.woff); }
+@font-face { font-family: u1800; src: url(u1d400.woff); }
+@font-face { font-family: u1800; src: url(u1d800.woff); }
+@font-face { font-family: u2000; src: url(u1f000.woff); }
+@font-face { font-family: u1800; src: url(u1f400.woff); }
+@font-face { font-family: u1800; src: url(u1f800.woff); }
+
+
 .baraja-demo {
 
 	margin: 10% auto;
-	color: #aaa;
+	color: black;
 }
 
 .no-js .baraja-demo {
@@ -13,7 +26,7 @@ body{
 }
 
 .baraja-demo h4 {
-	color: #666;
+	color: black;
 	font-size: 14px;
 	padding: 8px 10px 5px;
 	margin: 20px 3px 5px;
@@ -22,7 +35,7 @@ body{
 
 .baraja-demo p {
 	font-size: 12px;
-	font-weight: 700;
+	font-weight: 400;
 	padding: 0 10px;
 	margin: 10px 3px 0;
 }

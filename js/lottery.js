@@ -4,184 +4,12 @@
  *
  * Licensed under the MIT license.
  * http://www.opensource.org/licenses/mit-license.php
- * 
- * Authored By Zhaoyang Li, SSSAT, 2015.11. 
+ *
+ * Authored By Zhaoyang Li, SSSAT, 2015.11.
  * lizy14@mails.tsinghua.edu.cn
  */
 
 
-var defaultConfig = {
-
-	numberOfCards : 54,
-
-	shuffleFadeOutDuration : 500,
-	shuffleFadeOInDuration : 500,
-
-	busySpeed : 30,
-
-	timeBeforeGoFree : 30 * 1000,
-
-	freeSpeed : 888,
-	freeInterval : 4000,
-	freeDelayBeforeClose : 1888,
-	proportionOfFanWhenFree : 0.3,
-    
-	fans : [{
-			speed : 500,
-			easing : 'ease-out',
-			range : 90,
-			direction : 'right',
-			origin : {
-				x : 25,
-				y : 100
-			},
-			center : true
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 90,
-			direction : 'left',
-			origin : {
-				x : 75,
-				y : 100
-			},
-			center : true
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 90,
-			direction : 'right',
-			origin : {
-				minX : 20,
-				maxX : 80,
-				y : 100
-			},
-			center : true,
-			translation : 60
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 90,
-			direction : 'left',
-			origin : {
-				minX : 20,
-				maxX : 80,
-				y : 100
-			},
-			center : true,
-			translation : 60
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 100,
-			direction : 'right',
-			origin : {
-				x : 50,
-				y : 200
-			},
-			center : true
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 80,
-			direction : 'left',
-			origin : {
-				x : 200,
-				y : 50
-			},
-			center : true
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 20,
-			direction : 'right',
-			origin : {
-				x : 50,
-				y : 200
-			},
-			center : false,
-			translation : 300
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 20,
-			direction : 'left',
-			origin : {
-				x : 50,
-				y : 200
-			},
-			center : false,
-			translation : 300
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 20,
-			direction : 'right',
-			origin : {
-				x : 50,
-				y : 200
-			},
-			center : false,
-			translation : 300,
-			scatter : true
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 20,
-			direction : 'left',
-			origin : {
-				x : 50,
-				y : 200
-			},
-			center : false,
-			translation : 300,
-			scatter : true
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 130,
-			direction : 'left',
-			origin : {
-				x : 25,
-				y : 100
-			},
-			center : false
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 360,
-			direction : 'left',
-			origin : {
-				x : 50,
-				y : 90
-			},
-			center : false
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 330,
-			direction : 'left',
-			origin : {
-				x : 50,
-				y : 100
-			},
-			center : true
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 90,
-			direction : 'right',
-			origin : {
-				minX : 20,
-				maxX : 80,
-				y : 100
-			},
-			center : true,
-			translation : 60,
-			scatter : true
-		},
-	],
-};
 
 var config = $.extend(true, {}, defaultConfig, userConfig);
 
@@ -194,12 +22,42 @@ var freeCloseTimer;
 var goFreeTimer;
 var changingStatus = false;
 
+function getRandom(a, b){ //inclusive
+    return Math.floor(Math.random()*(b-a+1))+a;
+}
+function getTrueRandom(min, max, num, callback){ //inclusive
+  $.ajax({
+    "type": "GET",
+    "url":
+      "https://www.random.org/integers/"
+       +"?num="+num
+       +"&min="+min
+       +"&max="+max
+       +"&col=1&base=10&format=plain&rnd=new",
+    "success" : function(data, status, xhr){
+      data = data
+        .split('\n')
+        .slice(0,-1)
+        .map(function(x){
+          return parseInt(x);
+        });
+      callback(data);
+    },
+    "error": function(xhr, status, error){
+      console.log(status);
+      var result = [];
+      var i;
+      for(i=0; i<num; i++){
+        result.push(getRandom(min, max));
+      }
+      callback(result);
+    }
+  });
+}
 
 //array operations
-function pickRandomly(arr){
-    return arr[Math.floor(Math.random() * arr.length + 1)-1];
-}
-function range(n){
+
+function range(n){ //[0, n)
     var i;
     var arr=[];
     for(i=0; i<n; i++){
@@ -208,25 +66,26 @@ function range(n){
     return arr;
 }
 
-
-
 function shuffleCards(){
     var container = $('#baraja-el');
     container.html('');
-    var index = [];
-    
-    range(1).forEach(function(){
-        index = index.concat(range(config.numberOfCards));
-    });
-    
+    var index = range(
+      config.numberOfCards / 8
+    );
+
     index.sort(function(a,b){
         return Math.random() - 0.5;
     })
 
     index.forEach(function(j){
-        container.append('<li><img src="images/card'+(j+1)+'.jpg"/></li>')
-    })
-    
+      var _ = j * 8 + getRandom(0, 7);
+  	  container.append(
+        '<li><br><p style="font-size:260px">' + nodes[_].text
+        + '</p><br><p style="font-size:30px">' + nodes[_].name
+        + '</p><p style="font-size:50px">' + nodes[_].num
+        + '</p></li>')
+      })
+
     $el = $( '#baraja-el' );
     baraja = $el.baraja();
 }
@@ -234,7 +93,7 @@ function shuffleCards(){
 
 //mode transitions
 function stopAll(){
-    busyTimer = clearInterval(busyTimer);   
+    busyTimer = clearInterval(busyTimer);
     freeTimer = clearInterval(freeTimer);
     freeCloseTimer = clearTimeout(freeCloseTimer);
     goFreeTimer = clearTimeout(goFreeTimer);
@@ -256,26 +115,28 @@ function goFree(){
         freeCloseTimer = setTimeout(function(){
             baraja.close();
         }, config.freeDelayBeforeClose);
-        baraja.fan(pickRandomly(config.fans));
-        
+        baraja.fan(function(arr){
+            return arr[Math.floor(Math.random() * arr.length + 1)-1];
+        }(config.fans));
+
     }
-    
+
     baraja.options.speed = config.freeSpeed;
     baraja.close();
-    
+
     stopAll();
     freeTimer = setInterval(function(){
-        
+
 
         if(Math.random() < config.proportionOfFanWhenFree)
             goFan();
         else
             goNext();
-        
+
     }, config.freeInterval);
 }
 function goBusy(){
-    
+
     changingStatus = true;
     $el.fadeOut(config.shuffleFadeOutDuration, function(){
         shuffleCards();
@@ -288,7 +149,7 @@ function goBusy(){
             changingStatus = false;
         });
     });
-    
+
 }
 function toggleMode(){
     if(changingStatus)
