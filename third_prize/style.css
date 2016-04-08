@@ -1,0 +1,84 @@
+@font-face { font-family: u2c00; src: url(u2c00.woff); }
+@font-face { font-family: u2000; src: url(u2000.woff); }
+@font-face { font-family: u2800; src: url(u2000.woff); }
+@font-face { font-family: u1800; src: url(u1800.woff); }
+@font-face { font-family: u2c00; src: url(u13000.woff); }
+@font-face { font-family: u2000; src: url(u1d000.woff); }
+@font-face { font-family: u1800; src: url(u1d400.woff); }
+@font-face { font-family: u1800; src: url(u1d800.woff); }
+@font-face { font-family: u2000; src: url(u1f000.woff); }
+@font-face { font-family: u1800; src: url(u1f400.woff); }
+
+body{
+  	background: #fff url(bg.jpg);
+}
+#ssast{
+  position: absolute;
+  right: 20px;
+  bottom: 100px;
+  height: 80px;
+  width: 320px;
+  background-image: url(ssast.png);
+}
+
+#randomorg{
+  position: absolute;
+  right: 30px;
+  bottom: 30px;
+  height: 50px;
+  width: 339px;
+  background-image: url(randomorg.png);
+}
+.container{
+  display:none;
+  font-family: arial,
+    u2c00,u2000,u1800,u13000,u1d000,u1d400,u1d800,u2800,u1f400,u1f000;
+  position: relative;
+  top: 200px;
+}
+.symbol{
+  display:none;
+  font-size: 8em;
+  height: 180px;
+  overflow: hidden;
+}
+.card{
+  display:none;
+  float: left;
+  width: 179px;
+  height: 300px;
+  overflow: hidden;
+  border: solid 1px black;
+  text-align: center;
+  border-radius: 20px;
+  margin: 6px;
+  padding: 4px;
+}
+.card0{
+  background-color: #F38D5D;
+}
+.card1{
+  background-color: #EBE48C;
+}
+.card2{
+  background-color: #D0EAA9;
+}
+.card3{
+  background-color: #BAEBFF;
+}
+.card4{
+  background-color: #CBB8FF;
+}
+.dec{
+  display:none;
+  font-size: 3em;
+}
+.name{
+  display:none;
+  font-size: 1em;
+  margin-top: 5px;
+  height: 3.2em;
+  overflow: hidden;
+  vertical-align: middle;
+  padding: 2px;
+}
