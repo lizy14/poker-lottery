@@ -4,200 +4,40 @@
  *
  * Licensed under the MIT license.
  * http://www.opensource.org/licenses/mit-license.php
- * 
- * Authored By Zhaoyang Li, SSSAT, 2015.11. 
+ *
+ * Authored By Zhaoyang Li, SSSAT, 2015.11.
  * lizy14@mails.tsinghua.edu.cn
  */
 
-
-var defaultConfig = {
-
-	numberOfCards : 54,
-
-	shuffleFadeOutDuration : 500,
-	shuffleFadeOInDuration : 500,
-
-	busySpeed : 30,
-
-	timeBeforeGoFree : 30 * 1000,
-
-	freeSpeed : 888,
-	freeInterval : 4000,
-	freeDelayBeforeClose : 1888,
-	proportionOfFanWhenFree : 0.3,
-    
-	fans : [{
-			speed : 500,
-			easing : 'ease-out',
-			range : 90,
-			direction : 'right',
-			origin : {
-				x : 25,
-				y : 100
-			},
-			center : true
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 90,
-			direction : 'left',
-			origin : {
-				x : 75,
-				y : 100
-			},
-			center : true
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 90,
-			direction : 'right',
-			origin : {
-				minX : 20,
-				maxX : 80,
-				y : 100
-			},
-			center : true,
-			translation : 60
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 90,
-			direction : 'left',
-			origin : {
-				minX : 20,
-				maxX : 80,
-				y : 100
-			},
-			center : true,
-			translation : 60
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 100,
-			direction : 'right',
-			origin : {
-				x : 50,
-				y : 200
-			},
-			center : true
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 80,
-			direction : 'left',
-			origin : {
-				x : 200,
-				y : 50
-			},
-			center : true
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 20,
-			direction : 'right',
-			origin : {
-				x : 50,
-				y : 200
-			},
-			center : false,
-			translation : 300
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 20,
-			direction : 'left',
-			origin : {
-				x : 50,
-				y : 200
-			},
-			center : false,
-			translation : 300
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 20,
-			direction : 'right',
-			origin : {
-				x : 50,
-				y : 200
-			},
-			center : false,
-			translation : 300,
-			scatter : true
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 20,
-			direction : 'left',
-			origin : {
-				x : 50,
-				y : 200
-			},
-			center : false,
-			translation : 300,
-			scatter : true
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 130,
-			direction : 'left',
-			origin : {
-				x : 25,
-				y : 100
-			},
-			center : false
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 360,
-			direction : 'left',
-			origin : {
-				x : 50,
-				y : 90
-			},
-			center : false
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 330,
-			direction : 'left',
-			origin : {
-				x : 50,
-				y : 100
-			},
-			center : true
-		}, {
-			speed : 500,
-			easing : 'ease-out',
-			range : 90,
-			direction : 'right',
-			origin : {
-				minX : 20,
-				maxX : 80,
-				y : 100
-			},
-			center : true,
-			translation : 60,
-			scatter : true
-		},
-	],
-};
-
-var config = $.extend(true, {}, defaultConfig, userConfig);
-
-var $el;
-var baraja;
-
-var freeTimer;
-var busyTimer;
-var freeCloseTimer;
-var goFreeTimer;
-var changingStatus = false;
-
+/* 0 = least significant digit */
+var $el = [];
+var baraja = [];
+var n = [10, 10, 13];
 
 //array operations
 function pickRandomly(arr){
     return arr[Math.floor(Math.random() * arr.length + 1)-1];
+}
+function getRandomInt(min, max) { // noth inclusive
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
 }
 function range(n){
     var i;
@@ -211,93 +51,101 @@ function range(n){
 
 
 function shuffleCards(){
-    var container = $('#baraja-el');
-    container.html('');
-    var index = [];
-    
-    range(1).forEach(function(){
-        index = index.concat(range(config.numberOfCards));
-    });
-    
-    index.sort(function(a,b){
-        return Math.random() - 0.5;
-    })
 
-    index.forEach(function(j){
-        container.append('<li><img src="images/card'+(j+1)+'.jpg"/></li>')
-    })
-    
-    $el = $( '#baraja-el' );
-    baraja = $el.baraja();
+	n.forEach(function(e, i){
+		// e: number of cards for this digit
+		// i: digit id
+		var container = $('#baraja-el'+i);
+		container.html('');
+
+        var shuf = range(e);
+
+	    container.append('<li><img src="images/card0.jpg"/></li>')
+
+        $el[i] = $('#baraja-el'+i);
+        baraja[i] = $el[i].baraja();
+        baraja[i].setRandRange(e, i);
+	})
 }
 
-
-//mode transitions
-function stopAll(){
-    busyTimer = clearInterval(busyTimer);   
-    freeTimer = clearInterval(freeTimer);
-    freeCloseTimer = clearTimeout(freeCloseTimer);
-    goFreeTimer = clearTimeout(goFreeTimer);
+var timers = [];
+function set(i){
+    timers[i] = setInterval(function(){
+        console.log('next ' + i);
+        baraja[i].next()
+    }, 250);
 }
-function stopBusy(){
-    stopAll();
-    if(config.timeBeforeGoFree){
-        goFreeTimer = setTimeout(function(){
-            goFree();
-        }, config.timeBeforeGoFree);
+
+function clear(i){
+    timers[i] = clearInterval(timers[i]);
+    $('#digit'+i + ' span').css('opacity', '1.0');
+    if(i==2){
+        $('#digit3 span').css('opacity', '1.0');
     }
 }
-function goFree(){
-    function goNext(){
-        baraja.next();
-    }
-    function goFan(){
-        clearTimeout(freeCloseTimer);
-        freeCloseTimer = setTimeout(function(){
-            baraja.close();
-        }, config.freeDelayBeforeClose);
-        baraja.fan(pickRandomly(config.fans));
-        
-    }
-    
-    baraja.options.speed = config.freeSpeed;
-    baraja.close();
-    
-    stopAll();
-    freeTimer = setInterval(function(){
-        
 
-        if(Math.random() < config.proportionOfFanWhenFree)
-            goFan();
-        else
-            goNext();
-        
-    }, config.freeInterval);
-}
-function goBusy(){
-    
-    changingStatus = true;
-    $el.fadeOut(config.shuffleFadeOutDuration, function(){
-        shuffleCards();
-        stopAll();
-        busyTimer = setInterval(function(){
-                baraja.options.speed = config.busySpeed;
-                baraja.next();
-            }, config.busySpeed);
-        $el.fadeIn(config.shuffleFadeInDuration, function(){
-            changingStatus = false;
+var fanTimers = [];
+function load(i){
+    $('#digit'+i).css('border-color', 'red');
+    if(i==2){
+        $('#digit'+3).css('border-color', 'red');
+    }
+    else{
+        $('#digit'+(i+1)).css('border-color', '');
+    }
+    if(i==1){
+        $('#digit'+3).css('border-color', '');
+    }
+
+    $('#baraja-el'+(i==2?2:i+1)).fadeOut(function(){
+        $('#baraja-el'+i).fadeIn(function(){
+            var shuf = range(n[i]);
+            shuf.forEach(function(j){
+                if(j == 0)return;
+                setTimeout(function(){
+                    baraja[i].add($('<li><img src="images/card'+(j)+'.jpg"/></li>'));
+                }, (j - 1) * 400);
+            });
+            setTimeout(function(){
+                baraja[i].fan();
+            }, n[i] * 400);
         });
     });
-    
+
 }
+function defan(i){
+    baraja[i].close();
+}
+
+var currentStage = -1;
 function toggleMode(){
-    if(changingStatus)
-        return;
-    if(busyTimer){
-        stopBusy();
-    }else{
-        goBusy();
-    }
+
+
+    var handlers = [
+        function(){
+            $('.digit span').html('?');
+            $('#digit span').css('opacity', '0');
+            $('.baraja-container').hide();
+        },
+        function(){load(2);},
+        function(){defan(2);},
+        function(){set(2);},
+        function(){clear(2);},
+        function(){load(1);},
+        function(){defan(1);},
+        function(){set(1);},
+        function(){clear(1);},
+        function(){load(0);},
+        function(){defan(0);},
+        function(){set(0);},
+        function(){clear(0);},
+        function(){load(-1);},
+    ];
+    var maxHandlerId = handlers.length - 1;
+
+    currentStage += 1;
+
+    (handlers[currentStage])();
 }
 
 

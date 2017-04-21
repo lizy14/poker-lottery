@@ -2,36 +2,49 @@
 <html lang="en" class="no-js">
 	<head>
 		<meta charset="UTF-8" />
-        
+
 		<title>学生Ｊ | 抽奖</title>
-		
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="css/baraja.css" />
 		<link rel="stylesheet" type="text/css" href="css/demo.css" />
 		<link rel="stylesheet" type="text/css" href="css/custom.css" />
-		
+
         <script type="text/javascript" src="js/modernizr.custom.79639.js"></script>
         <script type="text/javascript" src="js/jquery.min.js"></script>
         <script type="text/javascript" src="js/jquery.baraja.js"></script>
-        
+
         <!-- Zhaoyang Li, SSAST, 2015.11 -->
         <script type="text/javascript" src="config.txt"></script>
         <script type="text/javascript" src="js/lottery.js"></script>
 	</head>
 	<body>
 		<div class="container">
-			<section class="main">
-				<div class="baraja-demo">
-					<ul id="baraja-el" class="baraja-container">  
+
+				<div id="baraja2" class="baraja-demo">
+					<ul id="baraja-el2" class="baraja-container">
 					</ul>
-                    <script>
-                        $(function(){
-                            shuffleCards();
-                            goFree();
-                        });
-                    </script>
 				</div>
-			</section>
-        </div>
+				<div id="baraja1" class="baraja-demo">
+					<ul id="baraja-el1" class="baraja-container">
+					</ul>
+				</div>
+				<div id="baraja0" class="baraja-demo">
+					<ul id="baraja-el0" class="baraja-container">
+					</ul>
+				</div>
+		</div>
+		<div class="digit-container">
+			<div id="digit3" class="digit"><span>&nbsp;</span></div>
+			<div id="digit2" class="digit"><span>&nbsp;</span></div>
+			<div id="digit1" class="digit"><span>&nbsp;</span></div>
+			<div id="digit0" class="digit"><span>&nbsp;</span></div>
+		</div>
+		<script>
+			$(function(){
+				shuffleCards();
+				toggleMode();
+			});
+		</script>
     </body>
 </html>

@@ -1,11 +1,33 @@
 body{
     overflow: hidden;
 }
+.digit{
+    font-size: 200px;
+    font-family: monospace;
+    display: inline-block;
+    margin-left: 88px;
+    border-bottom: black 20px solid;
+    line-height: 180px;
+    border-radius: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 140px;
+}
+.digit span{
+    opacity: 0;
+}
+ul.baraja-container {
+    width: 300px;
+    height: 424px;
+}
 
 .baraja-demo {
 
-	margin: 10% auto;
+	margin: 70px 19px 0px 19px;
 	color: #aaa;
+    display: inline-block;
+    width: 300px;
+    height: 424px;
 }
 
 .no-js .baraja-demo {
